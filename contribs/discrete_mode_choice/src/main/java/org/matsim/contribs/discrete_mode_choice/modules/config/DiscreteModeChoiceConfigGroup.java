@@ -497,6 +497,8 @@ public class DiscreteModeChoiceConfigGroup extends ReflectiveConfigGroup {
 				SubtourModeConstraintConfigGroup::new);
 		registry.put(new Tuple<>(TRIP_ESTIMATOR, EstimatorModule.MATSIM_TRIP_SCORING), //
 				MATSimTripScoringConfigGroup::new);
+		registry.put(new Tuple<>(TRIP_ESTIMATOR, EstimatorModule.PMML), //
+				PmmlTripEstimatorConfigGroup::new);
 		registry.put(new Tuple<>(TOUR_FILTER, FilterModule.TOUR_LENGTH), //
 				TourLengthFilterConfigGroup::new);
 
@@ -563,6 +565,13 @@ public class DiscreteModeChoiceConfigGroup extends ReflectiveConfigGroup {
 	 */
 	public ActivityHomeFinderConfigGroup getActivityHomeFinderConfigGroup() {
 		return (ActivityHomeFinderConfigGroup) getComponentConfig(HOME_FINDER, HomeFinderModule.ACTIVITY_BASED);
+	}
+
+	/**
+	 * See {@link PmmlTripEstimatorConfigGroup}
+	 */
+	public PmmlTripEstimatorConfigGroup getPmmlTripEstimatorConfigGroup() {
+		return (PmmlTripEstimatorConfigGroup) getComponentConfig(TRIP_ESTIMATOR, EstimatorModule.PMML);
 	}
 
 	/**
