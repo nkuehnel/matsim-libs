@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" version="4.4">
+  <Header description="apollo2pmml check"><Application name="apollo2pmml" version="0.1.0"/><Timestamp>2026-10-18T19:48:52Z</Timestamp></Header>
+  <DataDictionary numberOfFields="19">
+    <DataField name="distance_km" optype="continuous" dataType="double"><Extension name="unit" value="km"/></DataField>
+    <DataField name="income_eq" optype="continuous" dataType="double"></DataField>
+    <DataField name="tt_car" optype="continuous" dataType="double"><Extension name="unit" value="min"/><Extension name="description" value="in-vehicle time by car"/></DataField>
+    <DataField name="cost_car" optype="continuous" dataType="double"><Extension name="unit" value="EUR"/></DataField>
+    <DataField name="park_car" optype="continuous" dataType="double"></DataField>
+    <DataField name="hyp_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="tt_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="access_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="cost_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="headway_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="transfers_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="tt_bike" optype="continuous" dataType="double"></DataField>
+    <DataField name="tt_walk" optype="continuous" dataType="double"></DataField>
+    <DataField name="av_car" optype="continuous" dataType="double"></DataField>
+    <DataField name="av_pt" optype="continuous" dataType="double"></DataField>
+    <DataField name="av_bike" optype="continuous" dataType="double"></DataField>
+    <DataField name="av_walk" optype="continuous" dataType="double"></DataField>
+    <DataField name="u" optype="continuous" dataType="double"></DataField>
+    <DataField name="choice" optype="categorical" dataType="string"><Value value="car"/><Value value="pt"/><Value value="bike"/><Value value="walk"/></DataField>
+  </DataDictionary>
+  <TransformationDictionary>
+    <DerivedField name="lambda_dist" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">0.29999999999999999</Constant></DerivedField>
+    <DerivedField name="lambda_active" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.20000000000000001</Constant></DerivedField>
+    <DerivedField name="b_cost" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.26000000000000001</Constant></DerivedField>
+    <DerivedField name="lambda_cd" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.29999999999999999</Constant></DerivedField>
+    <DerivedField name="lambda_inc" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.40000000000000002</Constant></DerivedField>
+    <DerivedField name="b_tt_car" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.031</Constant></DerivedField>
+    <DerivedField name="lambda_bc" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">0.59999999999999998</Constant></DerivedField>
+    <DerivedField name="asc_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.80000000000000004</Constant></DerivedField>
+    <DerivedField name="b_hyp_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.29999999999999999</Constant></DerivedField>
+    <DerivedField name="b_tt_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.024</Constant></DerivedField>
+    <DerivedField name="b_access_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.050000000000000003</Constant></DerivedField>
+    <DerivedField name="b_headway_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.0060000000000000001</Constant></DerivedField>
+    <DerivedField name="b_transfers_pt" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.20000000000000001</Constant></DerivedField>
+    <DerivedField name="asc_bike" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-1.1000000000000001</Constant></DerivedField>
+    <DerivedField name="b_tt_bike" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.047</Constant></DerivedField>
+    <DerivedField name="lambda_tt_bike" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">1.3999999999999999</Constant></DerivedField>
+    <DerivedField name="b_tt_bike_20" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.062</Constant></DerivedField>
+    <DerivedField name="asc_walk" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">0.59999999999999998</Constant></DerivedField>
+    <DerivedField name="b_tt_walk" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.068000000000000005</Constant></DerivedField>
+    <DerivedField name="b_tt_walk_20" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.040000000000000001</Constant></DerivedField>
+    <DerivedField name="d" optype="continuous" dataType="double"><Apply function="pow"><Apply function="/"><Apply function="max"><FieldRef field="distance_km"/><Constant dataType="double">1</Constant></Apply><Constant dataType="double">20</Constant></Apply><FieldRef field="lambda_dist"/></Apply></DerivedField>
+    <DerivedField name="d_active" optype="continuous" dataType="double"><Apply function="pow"><Apply function="/"><Apply function="max"><FieldRef field="distance_km"/><Constant dataType="double">1</Constant></Apply><Constant dataType="double">20</Constant></Apply><FieldRef field="lambda_active"/></Apply></DerivedField>
+    <DerivedField name="bcost" optype="continuous" dataType="double"><Apply function="*"><Apply function="*"><FieldRef field="b_cost"/><Apply function="pow"><Apply function="/"><Apply function="max"><FieldRef field="distance_km"/><Constant dataType="double">1</Constant></Apply><Constant dataType="double">20</Constant></Apply><FieldRef field="lambda_cd"/></Apply></Apply><Apply function="pow"><Apply function="/"><FieldRef field="income_eq"/><Constant dataType="double">1700</Constant></Apply><FieldRef field="lambda_inc"/></Apply></Apply></DerivedField>
+    <DerivedField name="U(car)" optype="continuous" dataType="double"><Apply function="+"><Apply function="*"><Apply function="*"><FieldRef field="b_tt_car"/><FieldRef field="d"/></Apply><FieldRef field="tt_car"/></Apply><Apply function="*"><FieldRef field="bcost"/><Apply function="/"><Apply function="-"><Apply function="pow"><Apply function="+"><Apply function="+"><FieldRef field="cost_car"/><FieldRef field="park_car"/></Apply><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_bc"/></Apply><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_bc"/></Apply></Apply></Apply></DerivedField>
+    <DerivedField name="U(pt)" optype="continuous" dataType="double"><Apply function="+"><Apply function="+"><Apply function="+"><Apply function="+"><Apply function="+"><Apply function="+"><FieldRef field="asc_pt"/><Apply function="*"><FieldRef field="b_hyp_pt"/><FieldRef field="hyp_pt"/></Apply></Apply><Apply function="*"><Apply function="*"><FieldRef field="b_tt_pt"/><FieldRef field="d"/></Apply><FieldRef field="tt_pt"/></Apply></Apply><Apply function="*"><Apply function="*"><FieldRef field="b_access_pt"/><FieldRef field="d"/></Apply><FieldRef field="access_pt"/></Apply></Apply><Apply function="*"><FieldRef field="bcost"/><Apply function="/"><Apply function="-"><Apply function="pow"><Apply function="+"><FieldRef field="cost_pt"/><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_bc"/></Apply><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_bc"/></Apply></Apply></Apply><Apply function="*"><Apply function="*"><FieldRef field="b_headway_pt"/><FieldRef field="d"/></Apply><FieldRef field="headway_pt"/></Apply></Apply><Apply function="*"><Apply function="*"><FieldRef field="b_transfers_pt"/><FieldRef field="d"/></Apply><FieldRef field="transfers_pt"/></Apply></Apply></DerivedField>
+    <DerivedField name="U(bike)" optype="continuous" dataType="double"><Apply function="+"><Apply function="+"><FieldRef field="asc_bike"/><Apply function="*"><Apply function="*"><FieldRef field="b_tt_bike"/><FieldRef field="d_active"/></Apply><Apply function="/"><Apply function="-"><Apply function="pow"><Apply function="+"><FieldRef field="tt_bike"/><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_tt_bike"/></Apply><Constant dataType="double">1</Constant></Apply><FieldRef field="lambda_tt_bike"/></Apply></Apply></Apply><Apply function="*"><FieldRef field="b_tt_bike_20"/><Apply function="max"><Constant dataType="double">0</Constant><Apply function="-"><FieldRef field="tt_bike"/><Constant dataType="double">20</Constant></Apply></Apply></Apply></Apply></DerivedField>
+    <DerivedField name="U(walk)" optype="continuous" dataType="double"><Apply function="+"><Apply function="+"><FieldRef field="asc_walk"/><Apply function="*"><Apply function="*"><FieldRef field="b_tt_walk"/><FieldRef field="d_active"/></Apply><FieldRef field="tt_walk"/></Apply></Apply><Apply function="*"><FieldRef field="b_tt_walk_20"/><Apply function="max"><Constant dataType="double">0</Constant><Apply function="-"><FieldRef field="tt_walk"/><Constant dataType="double">20</Constant></Apply></Apply></Apply></Apply></DerivedField>
+    <DerivedField name="U(max)" optype="continuous" dataType="double"><Apply function="max"><Apply function="if"><Apply function="notEqual"><FieldRef field="av_car"/><Constant dataType="double">0</Constant></Apply><FieldRef field="U(car)"/><Constant dataType="double">-1.0000000000000001e+300</Constant></Apply><Apply function="if"><Apply function="notEqual"><FieldRef field="av_pt"/><Constant dataType="double">0</Constant></Apply><FieldRef field="U(pt)"/><Constant dataType="double">-1.0000000000000001e+300</Constant></Apply><Apply function="if"><Apply function="notEqual"><FieldRef field="av_bike"/><Constant dataType="double">0</Constant></Apply><FieldRef field="U(bike)"/><Constant dataType="double">-1.0000000000000001e+300</Constant></Apply><Apply function="if"><Apply function="notEqual"><FieldRef field="av_walk"/><Constant dataType="double">0</Constant></Apply><FieldRef field="U(walk)"/><Constant dataType="double">-1.0000000000000001e+300</Constant></Apply></Apply></DerivedField>
+    <DerivedField name="E(car)" optype="continuous" dataType="double"><Apply function="if"><Apply function="notEqual"><FieldRef field="av_car"/><Constant dataType="double">0</Constant></Apply><Apply function="exp"><Apply function="-"><FieldRef field="U(car)"/><FieldRef field="U(max)"/></Apply></Apply><Constant dataType="double">0</Constant></Apply></DerivedField>
+    <DerivedField name="E(pt)" optype="continuous" dataType="double"><Apply function="if"><Apply function="notEqual"><FieldRef field="av_pt"/><Constant dataType="double">0</Constant></Apply><Apply function="exp"><Apply function="-"><FieldRef field="U(pt)"/><FieldRef field="U(max)"/></Apply></Apply><Constant dataType="double">0</Constant></Apply></DerivedField>
+    <DerivedField name="E(bike)" optype="continuous" dataType="double"><Apply function="if"><Apply function="notEqual"><FieldRef field="av_bike"/><Constant dataType="double">0</Constant></Apply><Apply function="exp"><Apply function="-"><FieldRef field="U(bike)"/><FieldRef field="U(max)"/></Apply></Apply><Constant dataType="double">0</Constant></Apply></DerivedField>
+    <DerivedField name="E(walk)" optype="continuous" dataType="double"><Apply function="if"><Apply function="notEqual"><FieldRef field="av_walk"/><Constant dataType="double">0</Constant></Apply><Apply function="exp"><Apply function="-"><FieldRef field="U(walk)"/><FieldRef field="U(max)"/></Apply></Apply><Constant dataType="double">0</Constant></Apply></DerivedField>
+    <DerivedField name="E(sum)" optype="continuous" dataType="double"><Apply function="sum"><FieldRef field="E(car)"/><FieldRef field="E(pt)"/><FieldRef field="E(bike)"/><FieldRef field="E(walk)"/></Apply></DerivedField>
+    <DerivedField name="P(car)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(car)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+    <DerivedField name="P(pt)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(pt)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+    <DerivedField name="P(bike)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(bike)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+    <DerivedField name="P(walk)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(walk)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+    <DerivedField name="C(car)" optype="continuous" dataType="double"><FieldRef field="P(car)"/></DerivedField>
+    <DerivedField name="C(pt)" optype="continuous" dataType="double"><Apply function="sum"><FieldRef field="P(car)"/><FieldRef field="P(pt)"/></Apply></DerivedField>
+    <DerivedField name="C(bike)" optype="continuous" dataType="double"><Apply function="sum"><FieldRef field="P(car)"/><FieldRef field="P(pt)"/><FieldRef field="P(bike)"/></Apply></DerivedField>
+    <DerivedField name="C(walk)" optype="continuous" dataType="double"><Apply function="sum"><FieldRef field="P(car)"/><FieldRef field="P(pt)"/><FieldRef field="P(bike)"/><FieldRef field="P(walk)"/></Apply></DerivedField>
+    <DerivedField name="choice(drawn)" optype="categorical" dataType="string"><Apply function="if"><Apply function="lessThan"><FieldRef field="u"/><FieldRef field="C(car)"/></Apply><Constant dataType="string">car</Constant><Apply function="if"><Apply function="lessThan"><FieldRef field="u"/><FieldRef field="C(pt)"/></Apply><Constant dataType="string">pt</Constant><Apply function="if"><Apply function="lessThan"><FieldRef field="u"/><FieldRef field="C(bike)"/></Apply><Constant dataType="string">bike</Constant><Constant dataType="string">walk</Constant></Apply></Apply></Apply></DerivedField>
+  </TransformationDictionary>
+  <RegressionModel modelName="check" functionName="classification" normalizationMethod="simplemax">
+    <MiningSchema>
+      <MiningField name="distance_km"/>
+      <MiningField name="income_eq"/>
+      <MiningField name="tt_car"/>
+      <MiningField name="cost_car"/>
+      <MiningField name="park_car"/>
+      <MiningField name="hyp_pt"/>
+      <MiningField name="tt_pt"/>
+      <MiningField name="access_pt"/>
+      <MiningField name="cost_pt"/>
+      <MiningField name="headway_pt"/>
+      <MiningField name="transfers_pt"/>
+      <MiningField name="tt_bike"/>
+      <MiningField name="tt_walk"/>
+      <MiningField name="av_car"/>
+      <MiningField name="av_pt"/>
+      <MiningField name="av_bike"/>
+      <MiningField name="av_walk"/>
+      <MiningField name="u"/>
+      <MiningField name="choice" usageType="target"/>
+    </MiningSchema>
+    <Output>
+      <OutputField name="probability(car)" optype="continuous" dataType="double" feature="probability" value="car"/>
+      <OutputField name="probability(pt)" optype="continuous" dataType="double" feature="probability" value="pt"/>
+      <OutputField name="probability(bike)" optype="continuous" dataType="double" feature="probability" value="bike"/>
+      <OutputField name="probability(walk)" optype="continuous" dataType="double" feature="probability" value="walk"/>
+      <OutputField name="utility(car)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(car)"/></OutputField>
+      <OutputField name="utility(pt)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(pt)"/></OutputField>
+      <OutputField name="utility(bike)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(bike)"/></OutputField>
+      <OutputField name="utility(walk)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(walk)"/></OutputField>
+      <OutputField name="choice" optype="categorical" dataType="string" feature="transformedValue"><FieldRef field="choice(drawn)"/></OutputField>
+    </Output>
+    <RegressionTable targetCategory="car" intercept="0"><NumericPredictor name="P(car)" coefficient="1"/></RegressionTable>
+    <RegressionTable targetCategory="pt" intercept="0"><NumericPredictor name="P(pt)" coefficient="1"/></RegressionTable>
+    <RegressionTable targetCategory="bike" intercept="0"><NumericPredictor name="P(bike)" coefficient="1"/></RegressionTable>
+    <RegressionTable targetCategory="walk" intercept="0"><NumericPredictor name="P(walk)" coefficient="1"/></RegressionTable>
+  </RegressionModel>
+</PMML>

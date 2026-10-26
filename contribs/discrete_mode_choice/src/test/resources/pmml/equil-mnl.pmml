@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Small car/walk MNL in the layout of apollo2pmml, for the equil integration test (coefficients are made up). -->
+<PMML xmlns="http://www.dmg.org/PMML-4_4" version="4.4">
+  <Header description="equil car/walk test model"><Application name="apollo2pmml" version="0.1.0"/></Header>
+  <DataDictionary numberOfFields="4">
+    <DataField name="car.tt" optype="continuous" dataType="double"><Extension name="unit" value="min"/></DataField>
+    <DataField name="walk.tt" optype="continuous" dataType="double"><Extension name="unit" value="min"/></DataField>
+    <DataField name="trip.beeline_km" optype="continuous" dataType="double"><Extension name="unit" value="km"/></DataField>
+    <DataField name="choice" optype="categorical" dataType="string"><Value value="car"/><Value value="walk"/></DataField>
+  </DataDictionary>
+  <TransformationDictionary>
+    <DerivedField name="asc_walk" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">0.5</Constant></DerivedField>
+    <DerivedField name="b_tt_car" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.03</Constant></DerivedField>
+    <DerivedField name="b_tt_walk" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.07</Constant></DerivedField>
+    <DerivedField name="b_km_walk" optype="continuous" dataType="double"><Extension name="parameter" value="estimate"/><Constant dataType="double">-0.1</Constant></DerivedField>
+    <DerivedField name="U(car)" optype="continuous" dataType="double"><Apply function="*"><FieldRef field="b_tt_car"/><FieldRef field="car.tt"/></Apply></DerivedField>
+    <DerivedField name="U(walk)" optype="continuous" dataType="double"><Apply function="+"><Apply function="+"><FieldRef field="asc_walk"/><Apply function="*"><FieldRef field="b_tt_walk"/><FieldRef field="walk.tt"/></Apply></Apply><Apply function="*"><FieldRef field="b_km_walk"/><FieldRef field="trip.beeline_km"/></Apply></Apply></DerivedField>
+    <DerivedField name="U(max)" optype="continuous" dataType="double"><Apply function="max"><FieldRef field="U(car)"/><FieldRef field="U(walk)"/></Apply></DerivedField>
+    <DerivedField name="E(car)" optype="continuous" dataType="double"><Apply function="exp"><Apply function="-"><FieldRef field="U(car)"/><FieldRef field="U(max)"/></Apply></Apply></DerivedField>
+    <DerivedField name="E(walk)" optype="continuous" dataType="double"><Apply function="exp"><Apply function="-"><FieldRef field="U(walk)"/><FieldRef field="U(max)"/></Apply></Apply></DerivedField>
+    <DerivedField name="E(sum)" optype="continuous" dataType="double"><Apply function="sum"><FieldRef field="E(car)"/><FieldRef field="E(walk)"/></Apply></DerivedField>
+    <DerivedField name="P(car)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(car)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+    <DerivedField name="P(walk)" optype="continuous" dataType="double"><Apply function="/"><FieldRef field="E(walk)"/><FieldRef field="E(sum)"/></Apply></DerivedField>
+  </TransformationDictionary>
+  <RegressionModel modelName="equil" functionName="classification" normalizationMethod="simplemax">
+    <MiningSchema>
+      <MiningField name="car.tt"/><MiningField name="walk.tt"/><MiningField name="trip.beeline_km"/>
+      <MiningField name="choice" usageType="target"/>
+    </MiningSchema>
+    <Output>
+      <OutputField name="probability(car)" optype="continuous" dataType="double" feature="probability" value="car"/>
+      <OutputField name="probability(walk)" optype="continuous" dataType="double" feature="probability" value="walk"/>
+      <OutputField name="utility(car)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(car)"/></OutputField>
+      <OutputField name="utility(walk)" optype="continuous" dataType="double" feature="transformedValue"><FieldRef field="U(walk)"/></OutputField>
+    </Output>
+    <RegressionTable targetCategory="car" intercept="0"><NumericPredictor name="P(car)" coefficient="1"/></RegressionTable>
+    <RegressionTable targetCategory="walk" intercept="0"><NumericPredictor name="P(walk)" coefficient="1"/></RegressionTable>
+  </RegressionModel>
+</PMML>

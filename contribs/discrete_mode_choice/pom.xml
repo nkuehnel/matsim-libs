@@ -45,6 +45,13 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- independent PMML evaluator (Apache-2.0), only to check the built-in one -->
+		<dependency>
+			<groupId>org.pmml4s</groupId>
+			<artifactId>pmml4s_2.13</artifactId>
+			<version>1.5.8</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>
